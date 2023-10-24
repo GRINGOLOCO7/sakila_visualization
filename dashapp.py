@@ -3,9 +3,11 @@ from dash import html,dcc
 from dash.dependencies import Input, Output
 import pandas as pd
 from sqlalchemy import create_engine
+import pymysql
 
+pymysql.install_as_MySQLdb()
 # Connect to the Sakila database
-engine = create_engine('mysql://username:password@localhost/sakila')
+engine = create_engine('mysql://root:Stambek7@localhost/sakila')
 
 # Create the Dash app
 app = dash.Dash(__name__)
