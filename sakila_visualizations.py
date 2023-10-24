@@ -38,6 +38,43 @@ plt.xticks(rotation=45)  # Rotate category labels for readability
 plt.tight_layout()
 plt.show()
 
+
+
+
+#####################################################################################################
+
+
+
+
+query = '''
+SELECT customer.customer_id, SUM(payment.amount) AS total_payment_amount
+FROM customer
+JOIN payment ON customer.customer_id = payment.customer_id
+group by customer.customer_id, customer.first_name;
+'''
+# Execute the SQL query and load the results into a pandas DataFrame
+rental_data = pd.read_sql(query, engine)
+# Set the figure size
+plt.figure(figsize=(10, 6))
+# Create a bar chart
+plt.bar(rental_data['customer_id'], rental_data['total_payment_amount'])
+# Customize the chart
+plt.title('Rank customer by total payment')
+plt.xlabel('customer ID')
+plt.ylabel('total payment')
+plt.xticks(rotation=45)  # Rotate category labels for readability
+# Display the chart
+plt.tight_layout()
+plt.show()
+
+
+
+
+#####################################################################################################
+
+
+
+
 query = """
 SELECT DATE(rental_date) AS rental_day, COUNT(rental_id) AS rental_count
 FROM rental
@@ -62,3 +99,83 @@ plt.xticks(rotation=45)  # Rotate x-axis labels for readability
 # Display the chart
 plt.tight_layout()
 plt.show()
+
+
+
+
+#####################################################################################################
+
+
+
+
+query = '''
+SELECT category.name AS category, film.rating
+FROM film
+JOIN film_category ON film.film_id = film_category.film_id
+JOIN category ON film_category.category_id = category.category_id
+ORDER BY film.rating DESC;
+'''
+
+# Execute the SQL query and load the results into a pandas DataFrame
+rental_data = pd.read_sql(query, engine)
+
+# Set the figure size
+plt.figure(figsize=(10, 6))
+
+# Create a bar chart
+plt.bar(rental_data['category'], rental_data['rating'])
+
+# Customize the chart
+plt.title('Films with High Ratings in Each Category')
+plt.xlabel('Category')
+plt.ylabel('Rating')
+plt.xticks(rotation=45)  # Rotate category labels for readability
+
+# Display the chart
+plt.tight_layout()
+plt.show()
+
+
+
+
+#####################################################################################################
+
+
+
+
+query = '''
+SELECT film.film_id,
+    film.title,
+    SUM(payment.amount) AS total_revenue
+FROM film
+JOIN inventory ON film.film_id = inventory.film_id
+JOIN rental ON inventory.inventory_id = rental.inventory_id
+JOIN payment ON rental.rental_id = payment.rental_id
+GROUP BY film.film_id, film.title
+ORDER BY total_revenue DESC;
+'''
+
+# Execute the SQL query and load the results into a pandas DataFrame
+rental_data = pd.read_sql(query, engine)
+
+# Set the figure size
+plt.figure(figsize=(10, 6))
+
+# Create a bar chart
+plt.bar(rental_data['title'], rental_data['total_revenue'])
+
+# Customize the chart
+plt.title('movies with the highest revenue')
+plt.xlabel('film title')
+plt.ylabel('total_revenue')
+plt.xticks(rotation=45)
+# Reduce the font size of x-axis labels
+plt.xticks(fontsize=2)
+# Display the chart
+plt.tight_layout()
+plt.show()
+
+
+
+
+#####################################################################################################
