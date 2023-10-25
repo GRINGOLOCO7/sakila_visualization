@@ -28,14 +28,15 @@ app.layout = html.Div([
     ),
     
     # Line chart to display data over time
-    dcc.Graph(id='line-chart')
+    dcc.Graph(id='line-chart')   ############ copy it change it to a new chart and redo it with diffreent output and query
 ])
+######### download inploxDB
 
 # Define callback to update the line chart based on the selected category
 @app.callback(
-    Output('line-chart', 'figure'),
+    Output('line-chart', 'figure'),   ########### sold match with dcc.Graph(id='line-chart')
     [Input('category-dropdown', 'value')]
-)
+)############# when category change reload
 def update_line_chart(selected_category):
     # SQL query to retrieve data for the selected category over time
     query = f"""
@@ -56,7 +57,7 @@ def update_line_chart(selected_category):
             {
                 'x': rental_data['rental_day'],
                 'y': rental_data['rental_count'],
-                'type': 'bar',
+                'type': 'bar',  ################ bar/line/...
                 'marker': {'color': 'blue'}
             }
         ],

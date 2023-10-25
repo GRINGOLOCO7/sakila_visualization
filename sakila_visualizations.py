@@ -5,6 +5,19 @@ import pymysql
 
 pymysql.install_as_MySQLdb()
 
+
+
+'''
+NOTES
+connect mysql 
+run query
+access it via panda (es: input(rental_data) => data frame)
+execute the quary -> connected to dataframe with n colums input(rental_data[column_name])
+
+'''
+
+
+
 # Replace 'username' and 'password' with your MySQL username and password
 engine = create_engine('mysql://root:Stambek7@localhost/sakila')
 
