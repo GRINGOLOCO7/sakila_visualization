@@ -28,8 +28,9 @@ app.layout = html.Div([
     ),
     
     # Line chart to display data over time
-    dcc.Graph(id='line-chart')   ############ copy it change it to a new chart and redo it with diffreent output and query
-])
+    dcc.Graph(id='line-chart'),   ############ copy it change it to a new chart and redo it with diffreent output and query
+    dcc.Graph(id='myquery')
+    ])
 ######### download inploxDB
 
 # Define callback to update the line chart based on the selected category
@@ -69,6 +70,59 @@ def update_line_chart(selected_category):
     }
 
     return fig
+
+
+
+
+
+
+
+
+##########################################################à
+# Define callback to update the line chart based on the selected category
+@app.callback(
+    Output('myquery', 'figure'),   ########### sold match with dcc.Graph(id='line-chart')
+    [Input('category-dropdown', 'value')]
+)############# when category change reload
+def update_line_chart(selected_category):
+    # SQL query to retrieve data for the selected category over time
+    query = """
+    SELECT customer.customer_id, SUM(payment.amount) AS total_payment_amount
+    FROM customer
+    JOIN payment ON customer.customer_id = payment.customer_id
+    group by customer.customer_id, customer.first_name;
+    """
+
+    rental_data = pd.read_sql(query, engine)
+
+    # Create the line chart
+    fig = {
+        'data': [
+            {
+                'x': rental_data['customer_id'],
+                'y': rental_data['total_payment_amount'],
+                'type': 'bar',  ################ bar/line/...
+                'marker': {'color': 'blue'}
+            }
+        ],
+        'layout': {
+            'title': 'Rank customer by total payment',
+            'xaxis': {'title': 'customer ID'},
+            'yaxis': {'title': 'total payment'}
+        }
+    }
+
+    return fig
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
